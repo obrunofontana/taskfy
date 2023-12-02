@@ -55,17 +55,17 @@ export const BoardList = async () => {
             role="button"
             className="aspect-video relative h-full w-full bg-muted rounded-sm flex flex-col gap-y-1 items-center justify-center hover:opacity-75 transition"
           >
-            <p className="text-sm">Create new board</p>
+            <p className="text-sm">Criar novo projeto</p>
             <span className="text-xs">
               {isPro
-                ? 'Unlimited'
-                : `${MAX_FREE_BOARDS - availableCount} remaining`}
+                ? 'Ilimitado'
+                : `${MAX_FREE_BOARDS - availableCount} restantes`}
             </span>
 
             <Hint
               sideOffset={40}
               description={`
-                Free Workspaces can have up to 5 open boards. For unlimited boards upgrade this workspace.
+                Os espaços de trabalho gratuitos podem ter até cinco projetos abertos. Para projetos ilimitados, atualize este espaço de trabalho.
               `}
             >
               <HelpCircle className="absolute bottom-2 right-2 h-[14px] w-[14px]" />
