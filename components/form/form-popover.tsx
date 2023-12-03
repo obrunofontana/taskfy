@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { ElementRef, useRef } from 'react';
 import { toast } from 'sonner';
 
-import { createBoard } from '@/actions/create-board';
+import { createProject } from '@/actions/create-project';
 import { Button } from '@/components/ui/button';
 import {
   Popover,
@@ -37,11 +37,11 @@ export const FormPopover = ({
   const router = useRouter();
   const closeRef = useRef<ElementRef<'button'>>(null);
 
-  const { execute, fieldErrors } = useAction(createBoard, {
+  const { execute, fieldErrors } = useAction(createProject, {
     onSuccess: (data) => {
       toast.success('Projeto criado!');
       closeRef.current?.click();
-      router.push(`/board/${data.id}`);
+      router.push(`/project/${data.id}`);
     },
     onError: (error) => {
       toast.error(error);

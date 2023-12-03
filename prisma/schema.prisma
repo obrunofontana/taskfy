@@ -8,7 +8,7 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Board {
+model Project {
   id            String @id @default(uuid())
   orgId         String
   title         String
@@ -18,41 +18,41 @@ model Board {
   imageUserName String @db.Text
   imageLinkHTML String @db.Text
 
-  lists List[]
+  taskColumns TaskColumn[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
 
-model List {
+model TaskColumn {
   id    String @id @default(uuid())
   title String
   order Int
 
-  boardId String
-  board   Board  @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  projectId String
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
-  cards Card[]
+  tasks Task[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([boardId])
+  @@index([projectId])
 }
 
-model Card {
+model Task {
   id          String  @id @default(uuid())
   title       String
   order       Int
   description String? @db.Text
 
-  listId String
-  list   List   @relation(fields: [listId], references: [id], onDelete: Cascade)
+  taskColumnId String
+  taskColumn   TaskColumn @relation(fields: [taskColumnId], references: [id], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  @@index([listId])
+  @@index([taskColumnId])
 }
 
 enum ACTION {
@@ -62,9 +62,9 @@ enum ACTION {
 }
 
 enum ENTITY_TYPE {
-  BOARD
-  LIST
-  CARD
+  PROJECT
+  TASK_COLUMN
+  TASK
 }
 
 model AuditLog {

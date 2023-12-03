@@ -4,27 +4,27 @@ import { Copy, Trash } from 'lucide-react';
 import { useParams } from 'next/navigation';
 import { toast } from 'sonner';
 
-import { copyCard } from '@/actions/copy-card';
-import { deleteCard } from '@/actions/delete-card';
+import { copyTask } from '@/actions/copy-task';
+import { deleteTask } from '@/actions/delete-task';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAction } from '@/hooks/use-action';
 import { useCardModal } from '@/hooks/use-card-modal';
-import { CardWithList } from '@/types';
+import { TaskWithTaskColumn } from '@/types';
 
 interface ActionsProps {
-  data: CardWithList;
+  data: TaskWithTaskColumn;
 }
 
 export const Actions = ({ data }: ActionsProps) => {
   const params = useParams();
   const cardModal = useCardModal();
 
-  const { execute: executeCopyCard, isLoading: isLoadingCopy } = useAction(
-    copyCard,
+  const { execute: executeCopyTask, isLoading: isLoadingCopy } = useAction(
+    copyTask,
     {
       onSuccess: (data) => {
-        toast.success(`Card "${data.title}" copied`);
+        toast.success(`Tarefa "${data.title}" copiada`);
         cardModal.onClose();
       },
       onError: (error) => {
@@ -33,11 +33,11 @@ export const Actions = ({ data }: ActionsProps) => {
     }
   );
 
-  const { execute: executeDeleteCard, isLoading: isLoadingDelete } = useAction(
-    deleteCard,
+  const { execute: executeDeleteTask, isLoading: isLoadingDelete } = useAction(
+    deleteTask,
     {
       onSuccess: (data) => {
-        toast.success(`Card "${data.title}" deleted`);
+        toast.success(`Tarefa "${data.title}" removida`);
         cardModal.onClose();
       },
       onError: (error) => {
@@ -47,26 +47,27 @@ export const Actions = ({ data }: ActionsProps) => {
   );
 
   const onCopy = () => {
-    const boardId = params.boardId as string;
+    const projectId = params.projectId as string;
 
-    executeCopyCard({
+    executeCopyTask({
       id: data.id,
-      boardId,
+      projectId,
     });
   };
 
   const onDelete = () => {
-    const boardId = params.boardId as string;
+    const projectId = params.projectId as string;
 
-    executeDeleteCard({
+    executeDeleteTask({
       id: data.id,
-      boardId,
+      projectId,
     });
   };
 
   return (
     <div className="space-y-2 mt-2">
-      <p className="text-xs font-semibold">Actions</p>
+      <p className="text-xs font-semibold">Ações</p>
+
       <Button
         onClick={onCopy}
         disabled={isLoadingCopy}
@@ -75,8 +76,9 @@ export const Actions = ({ data }: ActionsProps) => {
         size="inline"
       >
         <Copy className="h-4 w-4 mr-2" />
-        Copy
+        Copiar
       </Button>
+
       <Button
         onClick={onDelete}
         disabled={isLoadingDelete}
@@ -85,7 +87,7 @@ export const Actions = ({ data }: ActionsProps) => {
         size="inline"
       >
         <Trash className="h-4 w-4 mr-2" />
-        Delete
+        Remover
       </Button>
     </div>
   );

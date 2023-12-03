@@ -7,16 +7,16 @@ import { ElementRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { useEventListener, useOnClickOutside } from 'usehooks-ts';
 
-import { updateCard } from '@/actions/update-card';
+import { updateTask } from '@/actions/update-task';
 import { FormSubmit } from '@/components/form/form-submit';
 import { FormTextarea } from '@/components/form/form-textarea';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAction } from '@/hooks/use-action';
-import { CardWithList } from '@/types';
+import { TaskWithTaskColumn } from '@/types';
 
 interface DescriptionProps {
-  data: CardWithList;
+  data: TaskWithTaskColumn;
 }
 
 export const Description = ({ data }: DescriptionProps) => {
@@ -48,15 +48,15 @@ export const Description = ({ data }: DescriptionProps) => {
   useEventListener('keydown', onKeyDown);
   useOnClickOutside(formRef, disableEditing);
 
-  const { execute, fieldErrors } = useAction(updateCard, {
+  const { execute, fieldErrors } = useAction(updateTask, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ['card', data.id],
+        queryKey: ['task', data.id],
       });
       queryClient.invalidateQueries({
-        queryKey: ['card-logs', data.id],
+        queryKey: ['task-logs', data.id],
       });
-      toast.success(`Card "${data.title}" updated`);
+      toast.success(`Tarefa "${data.title}" atualizada`);
       disableEditing();
     },
     onError: (error) => {
@@ -66,12 +66,12 @@ export const Description = ({ data }: DescriptionProps) => {
 
   const onSubmit = (formData: FormData) => {
     const description = formData.get('description') as string;
-    const boardId = params.boardId as string;
+    const projectId = params.projectId as string;
 
     execute({
       id: data.id,
       description,
-      boardId,
+      projectId,
     });
   };
 
@@ -90,6 +90,7 @@ export const Description = ({ data }: DescriptionProps) => {
               errors={fieldErrors}
               ref={textareaRef}
             />
+
             <div className="flex items-center gap-x-2">
               <FormSubmit>Salvar</FormSubmit>
               <Button

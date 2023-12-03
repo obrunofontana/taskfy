@@ -6,28 +6,28 @@ import { useParams } from 'next/navigation';
 import { ElementRef, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
-import { updateCard } from '@/actions/update-card';
+import { updateTask } from '@/actions/update-task';
 import { FormInput } from '@/components/form/form-input';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAction } from '@/hooks/use-action';
-import { CardWithList } from '@/types';
+import { TaskWithTaskColumn } from '@/types';
 
 interface HeaderProps {
-  data: CardWithList;
+  data: TaskWithTaskColumn;
 }
 
 export const Header = ({ data }: HeaderProps) => {
   const queryClient = useQueryClient();
   const params = useParams();
 
-  const { execute } = useAction(updateCard, {
+  const { execute } = useAction(updateTask, {
     onSuccess: (data) => {
       queryClient.invalidateQueries({
-        queryKey: ['card', data.id],
+        queryKey: ['task', data.id],
       });
 
       queryClient.invalidateQueries({
-        queryKey: ['card-logs', data.id],
+        queryKey: ['task-logs', data.id],
       });
 
       toast.success(`Renomeado para "${data.title}"`);
@@ -48,7 +48,7 @@ export const Header = ({ data }: HeaderProps) => {
 
   const onSubmit = (formData: FormData) => {
     const title = formData.get('title') as string;
-    const boardId = params.boardId as string;
+    const projectId = params.projectId as string;
 
     if (title === data.title) {
       return;
@@ -56,7 +56,7 @@ export const Header = ({ data }: HeaderProps) => {
 
     execute({
       title,
-      boardId,
+      projectId,
       id: data.id,
     });
   };
@@ -76,7 +76,7 @@ export const Header = ({ data }: HeaderProps) => {
         </form>
 
         <p className="text-sm text-muted-foreground">
-          na lista <span className="underline">{data.list.title}</span>
+          na lista <span className="underline">{data.taskColumn.title}</span>
         </p>
       </div>
     </div>
