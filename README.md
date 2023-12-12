@@ -4,6 +4,9 @@
 
 This project is developed for studying server actions in Next.js 14. The application replicates the core features of Trello, providing a simple and interactive task management interface. The project utilizes Tailwind CSS for styling and Shadcn Components for enhancing the user interface.
 
+![image](https://github.com/obrunofontana/taskfy/blob/main/public/screen-example.png)
+
+
 ## Features
 
 Key Features:
