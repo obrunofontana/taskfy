@@ -1,6 +1,7 @@
 {
   "name": "taskfy",
   "version": "0.1.0",
+  "description": "This project is developed for studying server actions in Next.js 14. The application replicates the core features of Trello, providing a simple and interactive task management interface. ",
   "private": true,
   "scripts": {
     "dev": "next dev",
